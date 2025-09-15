@@ -10,8 +10,7 @@ def main():
     # print("Starting Asteroids!")
     # print(f"Screen width: {SCREEN_WIDTH}\nScreen height: {SCREEN_HEIGHT}")
 
-    (pygame_init_mod, pygame_fail_mod) = pygame.init()
-    print(f"Init: {pygame_init_mod}\nFailed: {pygame_fail_mod}")
+    pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     game_clock = pygame.time.Clock()
     dt = 0
@@ -33,23 +32,22 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        screen.fill("black")
+        
+        updatables.update(dt)
         
         for asteroid in asteroids:
-            for shot in shots:
-                if asteroid.check_collision(shot):
-                    shot.kill()
-                    asteroid.kill()
-        
-        # Check for player <> asteroid collisions
-        for asteroid in asteroids:
+            # Check for player <> asteroid collisions
             if asteroid.check_collision(player):
                print("Game over!")
                exit(1)
-        
-        updatables.update(dt)
+            
+            for shot in shots:
+                if asteroid.check_collision(shot):
+                    shot.kill()
+                    asteroid.split()
 
         # draw objects to screen
+        screen.fill("black")
         for obj in drawables:
             obj.draw(screen)
         pygame.display.flip()
