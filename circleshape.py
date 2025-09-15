@@ -10,6 +10,8 @@ class CircleShape(pygame.sprite.Sprite):
             super().__init__()
 
         super().__init__()
+        # Call the parent class (Sprite) constructor
+        pygame.sprite.Sprite.__init__(self, self.containers)
         self.position = pygame.Vector2(x, y)
         self.velocity = pygame.Vector2(0, 0)
         self.radius = radius
